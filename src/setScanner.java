@@ -201,6 +201,9 @@ public class setScanner {
             case "set":
                 this.currToken = new Token(9);
                 break;
+            case "in":
+                this.currToken = new Token(26);
+                break;
             default:
                 this.currToken = new Token(1, tkString);
                 break;
