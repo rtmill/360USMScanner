@@ -10,9 +10,10 @@ public class ScannerDriver{
 
       // with my skeletons, the next line throws an exception, because
       // the lookahead method returns a null value;
-      while ((tk = sc.lookahead() ).tokenType != Token.UNRECOGNIZED){
+      while (tk.getTokenType() != Token.UNRECOGNIZED){
          System.out.println("Token #" + (i++) + ": " + tk);
          sc.consume();
+         tk = sc.lookahead();
       }
       System.out.println("Last token, #" + i + ": " + tk);
    }
