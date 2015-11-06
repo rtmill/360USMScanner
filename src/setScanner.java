@@ -68,7 +68,7 @@ public class setScanner {
             currToken = new Token(Token.UNRECOGNIZED);
         }
 
-        //Advance through whitespace
+        //Advance through whitespace and blank lines
         while (currPos >= currline.length || Character.isWhitespace(currline[currPos])) {
             currPos++;
             if (currPos >= currline.length) {
@@ -81,6 +81,7 @@ public class setScanner {
         int tkCode = 27;
 
         switch (currline[currPos]) {
+            //Letters that begin keywords.
             case 'p':
             case 'v':
             case 'b':
@@ -90,8 +91,9 @@ public class setScanner {
             case 's':
                 processP();
                 return;
+            //All single character tokens.
             case '0':
-                currToken = new Token(Token.NATCONST,"0");
+                currToken = new Token(Token.NATCONST, "0");
                 currPos++;
                 return;
             case '{':
@@ -160,9 +162,15 @@ public class setScanner {
         }
     }
 
+    /**
+     * Called to process tokens that span multiple characters beginning with a
+     * character and are not discernable from their first or second char.
+     *
+     */
     private void processP() {
         StringBuilder sb = new StringBuilder();
 
+        //Append chars to the StringBuilder until a non alphanumeric char or the end of the line is encountered
         for (; currPos < currline.length; currPos++) {
             if (Character.isWhitespace(currline[currPos]) || !Character.isLetterOrDigit(currline[currPos])) {
                 break;
@@ -173,6 +181,8 @@ public class setScanner {
 
         String tkString = sb.toString();
 
+        //If the string is a keyword then return the appropriate token. 
+        //Else it must be an identifier.
         switch (tkString) {
             case "program":
                 this.currToken = new Token(0);
@@ -213,15 +223,22 @@ public class setScanner {
         }
     }
 
+    /**
+     * Method processes all tokens that begin with a nonzero digit or with a
+     * char that does not also begin a keyword.
+     */
     private void processDefault() {
         StringBuilder sb = new StringBuilder();
+
+        //We are dealing with a number
         if (Character.isDigit(currline[currPos])) {
             while (currPos < currline.length && Character.isDigit(currline[currPos])) {
                 sb.append(currline[currPos]);
                 currPos++;
             }
             currToken = new Token(10, sb.toString());
-        } else if (Character.isLetter(currline[currPos])) {
+        } //We are dealing with a identifier
+        else if (Character.isLetter(currline[currPos])) {
             while (currPos < currline.length && Character.isLetterOrDigit(currline[currPos])) {
                 sb.append(currline[currPos]);
                 currPos++;
