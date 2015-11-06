@@ -91,7 +91,7 @@ public class setScanner {
                 processP();
                 return;
             case '0':
-                currToken = new Token(Token.NATCONST);
+                currToken = new Token(Token.NATCONST,"0");
                 currPos++;
                 return;
             case '{':
