@@ -19,6 +19,9 @@ public class setScanner {
          */
         currPos = 0;
 
+        //Just a temp value so currToken is not null
+        currToken = new Token(-1);
+
         this.consume();
     }
 
@@ -60,25 +63,49 @@ public class setScanner {
 
          */
 
-        //Next line if at end
-        if (currPos >= currline.length && src.hasNextLine()) {
-            currline = src.nextLine().toCharArray();
-            currPos = 0;
-        } else { //No more lines
-            currToken = new Token(Token.UNRECOGNIZED);
+        //Once an UNRECOGNIZED Token is encountered we do nothing on consume().
+        if (currToken.tokenType == Token.UNRECOGNIZED) {
+            return;
         }
 
-        //Advance through whitespace and blank lines
-        while (currPos >= currline.length || Character.isWhitespace(currline[currPos])) {
-            currPos++;
-            if (currPos >= currline.length) {
+        //Next line if at end
+        if (currPos >= currline.length) {
+            if (src.hasNextLine()) {
                 currline = src.nextLine().toCharArray();
                 currPos = 0;
+            } else { //No more lines
+                currToken = new Token(Token.UNRECOGNIZED);
+                return;
             }
         }
 
-        //UNRECOGNIZED by default
-        int tkCode = 27;
+        //Advance through whitespace and blank lines
+//        while (currPos <= currline.length && Character.isWhitespace(currline[currPos])) {
+//            currPos++;
+//            if (currPos >= currline.length) {
+//                currline = src.nextLine().toCharArray();
+//                currPos = 0;
+//            }
+//        }
+        while (currline.length == 0 || Character.isWhitespace(currline[currPos])) {
+            if (currline.length == 0) {
+                if (src.hasNextLine()) {
+                    currline = src.nextLine().toCharArray();
+                    currPos = 0;
+                } else {
+                    currToken = new Token(Token.UNRECOGNIZED);
+                    return;
+                }
+            } else if (Character.isWhitespace(currline[currPos])) {
+                currPos++;
+                if (currPos >= currline.length) {
+                    currline = src.nextLine().toCharArray();
+                    currPos = 0;
+                }
+            }
+        }
+
+        int tkCode;
 
         switch (currline[currPos]) {
             //Letters that begin keywords.
@@ -244,6 +271,9 @@ public class setScanner {
                 currPos++;
             }
             currToken = new Token(1, sb.toString());
+        } else {
+            currToken = new Token(27);
+
         }
     }
 }
