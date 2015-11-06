@@ -117,9 +117,11 @@ public class setScanner {
                 break;
             case ':':
                 tkCode = currline[currPos + 1] == '=' ? 18 : 27;
+                currPos++;
                 break;
             case '<':
                 tkCode = currline[currPos + 1] == '=' ? 19 : 27;
+                currPos++;
                 break;
             case '=':
                 tkCode = 20;
