@@ -198,6 +198,9 @@ public class setScanner {
             case "nat":
                 this.currToken = new Token(8);
                 break;
+            case "not":
+                this.currToken = new Token(21);
+                break;
             case "set":
                 this.currToken = new Token(9);
                 break;
