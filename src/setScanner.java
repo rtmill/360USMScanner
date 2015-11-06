@@ -79,14 +79,7 @@ public class setScanner {
             }
         }
 
-        //Advance through whitespace and blank lines
-//        while (currPos <= currline.length && Character.isWhitespace(currline[currPos])) {
-//            currPos++;
-//            if (currPos >= currline.length) {
-//                currline = src.nextLine().toCharArray();
-//                currPos = 0;
-//            }
-//        }
+
         while (currline.length == 0 || Character.isWhitespace(currline[currPos])) {
             if (currline.length == 0) {
                 if (src.hasNextLine()) {
