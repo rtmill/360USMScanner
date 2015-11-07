@@ -109,6 +109,7 @@ public class setScanner {
             case 'i':
             case 'n':
             case 's':
+            case 't':
                 processP();
                 return;
             //All single character tokens.
@@ -117,48 +118,48 @@ public class setScanner {
                 currPos++;
                 return;
             case '{':
-                tkCode = 11;
+                tkCode = Token.LEFTBRACE;
                 break;
             case '}':
-                tkCode = 12;
+                tkCode = Token.RIGHTBRACE;
                 break;
             case '(':
-                tkCode = 13;
+                tkCode = Token.LEFTPAREN;
                 break;
             case ')':
-                tkCode = 14;
+                tkCode = Token.RIGHTPAREN;
                 break;
             case ';':
-                tkCode = 15;
+                tkCode = Token.SEMICOLON;
                 break;
             case '.':
-                tkCode = 16;
+                tkCode = Token.PERIOD;
                 break;
             case ',':
-                tkCode = 17;
+                tkCode = Token.COMMA;
                 break;
             case ':':
-                tkCode = currline[currPos + 1] == '=' ? 18 : 27;
+                tkCode = currline[currPos + 1] == '=' ? Token.ASSIGN : Token.UNRECOGNIZED;
                 currPos++;
                 break;
             case '<':
-                tkCode = currline[currPos + 1] == '=' ? 19 : 27;
+                tkCode = currline[currPos + 1] == '=' ? Token.SUBSET : Token.UNRECOGNIZED;
                 currPos++;
                 break;
             case '=':
-                tkCode = 20;
+                tkCode = Token.EQUALS;
                 break;
             case '*':
-                tkCode = 22;
+                tkCode = Token.INTERSECTION;
                 break;
             case '+':
-                tkCode = 23;
+                tkCode = Token.UNION;
                 break;
             case '\\':
-                tkCode = 24;
+                tkCode = Token.SETDIFFERENCE;
                 break;
             case '-':
-                tkCode = 25;
+                tkCode = Token.COMPLEMENT;
                 break;
             default:
                 processDefault();
@@ -205,40 +206,43 @@ public class setScanner {
         //Else it must be an identifier.
         switch (tkString) {
             case "program":
-                this.currToken = new Token(0);
+                this.currToken = new Token(Token.PROGRAM);
                 break;
             case "var":
-                this.currToken = new Token(2);
+                this.currToken = new Token(Token.VAR);
                 break;
             case "begin":
-                this.currToken = new Token(3);
+                this.currToken = new Token(Token.BEGIN);
                 break;
             case "end":
-                this.currToken = new Token(4);
+                this.currToken = new Token(Token.END);
                 break;
             case "if":
-                this.currToken = new Token(5);
+                this.currToken = new Token(Token.IF);
                 break;
             case "else":
-                this.currToken = new Token(6);
+                this.currToken = new Token(Token.ELSE);
                 break;
             case "endif":
-                this.currToken = new Token(7);
+                this.currToken = new Token(Token.ENDIF);
                 break;
             case "nat":
-                this.currToken = new Token(8);
+                this.currToken = new Token(Token.NAT);
                 break;
             case "not":
-                this.currToken = new Token(21);
+                this.currToken = new Token(Token.NOT);
                 break;
             case "set":
-                this.currToken = new Token(9);
+                this.currToken = new Token(Token.SET);
                 break;
             case "in":
-                this.currToken = new Token(26);
+                this.currToken = new Token(Token.IS_IN);
+                break;
+            case "then":
+                this.currToken = new Token(Token.THEN);
                 break;
             default:
-                this.currToken = new Token(1, tkString);
+                this.currToken = new Token(Token.ID, tkString);
                 break;
         }
     }
@@ -256,16 +260,16 @@ public class setScanner {
                 sb.append(currline[currPos]);
                 currPos++;
             }
-            currToken = new Token(10, sb.toString());
+            currToken = new Token(Token.NATCONST, sb.toString());
         } //We are dealing with a identifier
         else if (Character.isLetter(currline[currPos])) {
             while (currPos < currline.length && Character.isLetterOrDigit(currline[currPos])) {
                 sb.append(currline[currPos]);
                 currPos++;
             }
-            currToken = new Token(1, sb.toString());
+            currToken = new Token(Token.ID, sb.toString());
         } else {
-            currToken = new Token(27);
+            currToken = new Token(Token.UNRECOGNIZED);
 
         }
     }

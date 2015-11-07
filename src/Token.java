@@ -6,7 +6,7 @@ public class Token {
         "natconstant", "leftbrace", "rightbrace", "leftparen",
         "rightparen", "semicolon", "period", "comma", "assign", "subset",
         "equals", "not", "intersection", "union", "setdifference", "complement",
-        "is in", "unrecognized"};
+        "is in", "then", "unrecognized"};
 
     public static final int // for the token types
             PROGRAM = 0, //  "program"  a reserved word
@@ -36,7 +36,8 @@ public class Token {
             SETDIFFERENCE = 24, // '\'   for binary set difference
             COMPLEMENT = 25, // '-'   for unary set complement
             IS_IN = 26, //  "in"  for set membership; so "in" is reserved
-            UNRECOGNIZED = 27; // for anything else
+            THEN = 27,
+            UNRECOGNIZED = 28; // for anything else
     /**
      * *
      *
