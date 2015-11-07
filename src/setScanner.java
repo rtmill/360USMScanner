@@ -110,6 +110,7 @@ public class setScanner {
             case 'n':
             case 's':
             case 't':
+            case 'C':
                 processP();
                 return;
             //All single character tokens.
@@ -240,6 +241,9 @@ public class setScanner {
                 break;
             case "then":
                 this.currToken = new Token(Token.THEN);
+                break;
+            case "CMP":
+                this.currToken = new Token(Token.CMP);
                 break;
             default:
                 this.currToken = new Token(Token.ID, tkString);
