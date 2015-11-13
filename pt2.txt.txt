@@ -1,0 +1,47 @@
+program s2
+var
+nat n, m, k;
+set
+s, t, u, v;
+begin
+
+  t := ((((((((((s))))))))));
+
+  if (s + t)  <= (s \ t) then endif;
+
+  n := 12;
+  m := n;
+  s := { 1,2,12 };
+  t := -s;
+  t := s * t;
+  t := t + s;
+
+  t := s \ u;
+  t := s * u;
+  t := s + u;
+  t := - - - - - - s;
+  n := 100;
+  t := s * t * v;
+  t := s + t + u + v + t;
+  t := t \ s \ u \ v \ s \ v;
+
+  t := - - - - - - { 1,2,3,4 };
+  t := { 1,2,3,4 } * t * CMP{} * {} * { 1,2,3,4 };
+  t := { 1,2,3,4 } + t + {} + CMP{} + t;
+  t := t \ { 1,2,3,4 } \ {} \ CMP{} \ { 1,2,3,4 } \ CMP{};
+
+
+  u := t + s \ v * s + t + {5, 6, 7 } + { 10, 11, 12};
+  u := {0};
+  m := 1;
+  if  m in s then
+     u := {1}
+  endif;
+  if  m in t + s then
+     v := {3}
+  else
+     v := {2}
+  endif
+end
+v+ u
+.
