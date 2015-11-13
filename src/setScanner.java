@@ -14,12 +14,11 @@ public class setScanner {
     public setScanner() {
         src = new Scanner(System.in);
         // load currToken with the first token
-        /**
-         * NEW CODE
-         */
+
         currPos = 0;
 
-        //Just a temp value so currToken is not null
+        //Just a temp value so currToken is not null. Necessary for consume() to be able to check for 
+        //UNRECOGNIZED token at start of method. 
         currToken = new Token(-1);
 
         this.consume();
@@ -31,57 +30,14 @@ public class setScanner {
     }
 
     public void consume() {
-        /*
-
-         if the current token is already UNRECOGNIZED this
-         operation has no effect(do it this way; another time
-         I might have it discard the current character and try
-         again)
-
-         skip over WS in src until either reaches end of file
-         or a non WS char(I'd do it line by line, but you may
-         do it some other way)
-       
-         if reaches eof w/o seeing nonWS loads 
-         currToken with UNRECOGNIZED
-         else
-         scans the src from the current non-ws position and
-         loads currToken with the longest prefix that
-         matches a token definition; if no prefix matches,
-         loads currToken with UNRECOGNIZED
-
-         The thing to be mindful of is when one token's definition
-         is in effect a prefix of another's.  Proper prefixes of 
-         reserved words and "not" and "in" are identifiers, and
-         "not", "in", and reserved words, if followed immediately
-         by letters or digits are identifiers, but I don't think any
-         of the other token definitions have common prefixes. I think
-         if you start with a letter and keep scanning as long as you
-         have a letter or digit, then the result will be easy to
-         classify.  The other tokens are easily distinguished by
-         the first character.
-
-         */
 
         //Once an UNRECOGNIZED Token is encountered we do nothing on consume().
         if (currToken.tokenType == Token.UNRECOGNIZED) {
             return;
         }
 
-        //Next line if at end
-        if (currPos >= currline.length) {
-            if (src.hasNextLine()) {
-                currline = src.nextLine().toCharArray();
-                currPos = 0;
-            } else { //No more lines
-                currToken = new Token(Token.UNRECOGNIZED);
-                return;
-            }
-        }
-
-
-        while (currline.length == 0 || Character.isWhitespace(currline[currPos])) {
-            if (currline.length == 0) {
+        while (currline.length == 0 || currPos >= currline.length || Character.isWhitespace(currline[currPos])) {
+            if (currline.length == 0 || currPos >= currline.length) {
                 if (src.hasNextLine()) {
                     currline = src.nextLine().toCharArray();
                     currPos = 0;
@@ -139,14 +95,6 @@ public class setScanner {
             case ',':
                 tkCode = Token.COMMA;
                 break;
-            case ':':
-                tkCode = currline[currPos + 1] == '=' ? Token.ASSIGN : Token.UNRECOGNIZED;
-                currPos++;
-                break;
-            case '<':
-                tkCode = currline[currPos + 1] == '=' ? Token.SUBSET : Token.UNRECOGNIZED;
-                currPos++;
-                break;
             case '=':
                 tkCode = Token.EQUALS;
                 break;
@@ -162,45 +110,39 @@ public class setScanner {
             case '-':
                 tkCode = Token.COMPLEMENT;
                 break;
+            case ':':
+                tkCode = currline[currPos + 1] == '=' ? Token.ASSIGN : Token.UNRECOGNIZED;
+                currPos++;
+                break;
+            case '<':
+                tkCode = currline[currPos + 1] == '=' ? Token.SUBSET : Token.UNRECOGNIZED;
+                currPos++;
+                break;
             default:
                 processDefault();
                 return;
         }
+
         Token result = new Token(tkCode);
         currToken = result;
         currPos++;
+
     }
 
     /**
-     * Testing Routine
-     *
-     * @param args
-     */
-    public static void main(String[] args) {
-        setScanner s = new setScanner();
-        while (s.lookahead().tokenType != Token.UNRECOGNIZED) {
-            System.out.print(s.currToken + " ");
-            s.consume();
-        }
-    }
-
-    /**
-     * Called to process tokens that span multiple characters beginning with a
-     * character and are not discernable from their first or second char.
+     * Process tokens that begin with a character that also begins a keyword.
      *
      */
     private void processP() {
+
         StringBuilder sb = new StringBuilder();
 
         //Append chars to the StringBuilder until a non alphanumeric char or the end of the line is encountered
-        for (; currPos < currline.length; currPos++) {
-            if (Character.isWhitespace(currline[currPos]) || !Character.isLetterOrDigit(currline[currPos])) {
-                break;
-            }
+        while(currPos < currline.length && Character.isLetterOrDigit(currline[currPos])){
             sb.append(currline[currPos]);
-
+            currPos++;
         }
-
+        
         String tkString = sb.toString();
 
         //If the string is a keyword then return the appropriate token. 
