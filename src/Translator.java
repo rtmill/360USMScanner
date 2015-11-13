@@ -14,6 +14,7 @@ public class Translator {
     static setScanner scanner = new setScanner();
     static int currPos = 0;
     static Token currToken;
+    static StringBuilder sb;
     
 
     public static void main(String[] args) {
