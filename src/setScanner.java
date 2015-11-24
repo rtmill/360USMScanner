@@ -1,4 +1,13 @@
 
+/**
+ * Course: COS 360
+ * Instructor: David Briggs
+ * Assignment: HM 4
+ * Authors: Grant Wilson & Robert Miller
+ * Class: setScanner
+ */
+
+
 import java.util.*;
 
 public class setScanner {
@@ -47,10 +56,6 @@ public class setScanner {
                 }
             } else if (Character.isWhitespace(currline[currPos])) {
                 currPos++;
-                if (currPos >= currline.length) {
-                    currline = src.nextLine().toCharArray();
-                    currPos = 0;
-                }
             }
         }
 
@@ -111,10 +116,18 @@ public class setScanner {
                 tkCode = Token.COMPLEMENT;
                 break;
             case ':':
+                if (currPos >= currline.length - 1) {
+                    tkCode = Token.UNRECOGNIZED;
+                    break;
+                }
                 tkCode = currline[currPos + 1] == '=' ? Token.ASSIGN : Token.UNRECOGNIZED;
                 currPos++;
                 break;
             case '<':
+                if (currPos >= currline.length - 1) {
+                    tkCode = Token.UNRECOGNIZED;
+                    break;
+                }
                 tkCode = currline[currPos + 1] == '=' ? Token.SUBSET : Token.UNRECOGNIZED;
                 currPos++;
                 break;
@@ -138,11 +151,11 @@ public class setScanner {
         StringBuilder sb = new StringBuilder();
 
         //Append chars to the StringBuilder until a non alphanumeric char or the end of the line is encountered
-        while(currPos < currline.length && Character.isLetterOrDigit(currline[currPos])){
+        while (currPos < currline.length && Character.isLetterOrDigit(currline[currPos])) {
             sb.append(currline[currPos]);
             currPos++;
         }
-        
+
         String tkString = sb.toString();
 
         //If the string is a keyword then return the appropriate token. 
