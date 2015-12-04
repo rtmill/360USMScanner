@@ -20,7 +20,10 @@ public class setTranslator {
     static int currPos = 0;
     static Token currToken;
     static StringBuilder sb = new StringBuilder();
+<<<<<<< HEAD
 
+=======
+>>>>>>> fd726ba177f759df99642bf58f0d6872985376a7
     
     static boolean declared;
     static String varType = "NAT"; //used to determine what sort of variable is being declared, "NAT" and "SET"
@@ -66,10 +69,13 @@ public class setTranslator {
             scanner.consume();
             tokens.add(toke);
         }
+<<<<<<< HEAD
 
         for(int i=0; i < tokens.size(); i ++){
             System.out.println(tokens.get(i));
         }
+=======
+>>>>>>> fd726ba177f759df99642bf58f0d6872985376a7
     }
     
     public static void parseProgram() {
@@ -109,7 +115,11 @@ public class setTranslator {
         getNextToken();
 
         //public static void main (String[] args){...
+<<<<<<< HEAD
         sb.append("\npublic static void main (String[] args){\n\n");
+=======
+        sb.append("public static void main (String[] args){\n");
+>>>>>>> fd726ba177f759df99642bf58f0d6872985376a7
         
         parseStList();
         
@@ -202,11 +212,16 @@ public class setTranslator {
         else if (currToken.tokenType == Token.IF || currToken.tokenType == Token.ID) {
             //TODO expected either if or id
             parseNeStList();
+<<<<<<< HEAD
             sb.append(";\n");
             
         }
         
         else {
+=======
+            
+        } else {
+>>>>>>> fd726ba177f759df99642bf58f0d6872985376a7
             //Empty st list
         }
         
@@ -216,7 +231,10 @@ public class setTranslator {
         parseSt();
         if (currToken.tokenType == Token.SEMICOLON) {
             getNextToken();
+<<<<<<< HEAD
             sb.append(";\n");
+=======
+>>>>>>> fd726ba177f759df99642bf58f0d6872985376a7
             parseNeStList();
         }
         
@@ -261,6 +279,7 @@ public class setTranslator {
             //TODO expected id
             handleError("ID");
         }
+<<<<<<< HEAD
   
         if(tokens.get(currPos+1).tokenType == Token.LEFTBRACE){
         	sb.append("int[] "+ currToken.tokenString);
@@ -268,12 +287,17 @@ public class setTranslator {
         else{
            sb.append(currToken.tokenString);
         }
+=======
+>>>>>>> fd726ba177f759df99642bf58f0d6872985376a7
         getNextToken();
         if (currToken.tokenType != Token.ASSIGN) {
             //TODO expected assign
             handleError("ASSIGN");
         }
+<<<<<<< HEAD
         sb.append(" = ");
+=======
+>>>>>>> fd726ba177f759df99642bf58f0d6872985376a7
         getNextToken();
         parseSetExp();
     }
@@ -283,10 +307,16 @@ public class setTranslator {
         parseSLevel2();
         if (currToken.tokenType == Token.SETDIFFERENCE) {
             //TODO:  Consume set difference token and add to output
+<<<<<<< HEAD
             sb.append(".intersect(");
             getNextToken();
             parseSetExp();
             sb.append(".complement())");
+=======
+            sb.append(" \\ ");
+            getNextToken();
+            parseSetExp();
+>>>>>>> fd726ba177f759df99642bf58f0d6872985376a7
         }
         
     }
@@ -295,29 +325,47 @@ public class setTranslator {
         parseSLevel1();
         if (currToken.tokenType == Token.UNION) {
             //TODO:  consume UNION and add to output AFTER
+<<<<<<< HEAD
             sb.append(".union(");
             getNextToken();
             parseSLevel2();
             sb.append(")");
+=======
+            sb.append(" + ");
+            getNextToken();
+            parseSLevel2();
+>>>>>>> fd726ba177f759df99642bf58f0d6872985376a7
         }
     }
     
     public static void parseSLevel1() {
         parseSLevel0();
         if (currToken.tokenType == Token.INTERSECTION) {
+<<<<<<< HEAD
             sb.append(".intersect(");
             getNextToken();
             parseSLevel1();
             sb.append(")");
+=======
+            sb.append("* ");
+            getNextToken();
+            parseSLevel1();
+>>>>>>> fd726ba177f759df99642bf58f0d6872985376a7
         }
     }
     
     public static void parseSLevel0() {
         if (currToken.tokenType == Token.COMPLEMENT) {
             //TODO:  Consume COMPLEMENT and add to output BEFORE
+<<<<<<< HEAD
             getNextToken();
             parseSLevel0();
             sb.append(".complement()");
+=======
+            sb.append("-");
+            getNextToken();
+            parseSLevel0();
+>>>>>>> fd726ba177f759df99642bf58f0d6872985376a7
         } else {
             parseSAtomic();
         }
@@ -328,9 +376,12 @@ public class setTranslator {
             if (symbols.get(currToken.tokenString) == "SET") {
                 // TODO: What does he mean here? Add tokenString to output?
                 // satomicResultVar = ID;
+<<<<<<< HEAD
                 sb.append(currToken.tokenString);
                 getNextToken();
 
+=======
+>>>>>>> fd726ba177f759df99642bf58f0d6872985376a7
 
             } else if (symbols.get(currToken.tokenString) == "NAT") {
                 throw new Error("Identifier declared as NAT, must be SET");
@@ -343,16 +394,25 @@ public class setTranslator {
             parseSetExp();
 
             if (currToken.tokenType == Token.RIGHTPAREN) {
+<<<<<<< HEAD
                 sb.append(")");
+=======
+                sb.append(") ");
+>>>>>>> fd726ba177f759df99642bf58f0d6872985376a7
                 getNextToken();
             } else {
                 throw new Error("RIGHTPAREN expected");
             }
         } else if (currToken.tokenType == Token.CMP || currToken.tokenType == Token.LEFTBRACE) {
             parseSetConst();
+<<<<<<< HEAD
         }
         else{
             throw new Error("S Atomic unresolved, instead:" + currToken);
+=======
+            // TODO: What does he mean here? Add tokenString to output?
+            // satomicResultVar = setConstResultVar;
+>>>>>>> fd726ba177f759df99642bf58f0d6872985376a7
         }
     }
 
@@ -432,7 +492,11 @@ public class setTranslator {
             throw new Error("NAT type expected");
         }
         else{
+<<<<<<< HEAD
             sb.append(currToken.tokenString);
+=======
+            sb.append(currToken.tokenString + " ");
+>>>>>>> fd726ba177f759df99642bf58f0d6872985376a7
             getNextToken();
             if (currToken.tokenType != Token.ASSIGN) {
                 handleError("ASSIGN");
@@ -447,12 +511,19 @@ public class setTranslator {
     // TODO
     public static void parseNatExp() {
         if (currToken.tokenType == Token.ID) {
+<<<<<<< HEAD
         	sb.append(currToken.tokenString);
+=======
+            // TODO : Output here?
+>>>>>>> fd726ba177f759df99642bf58f0d6872985376a7
             getNextToken();
         } else if (currToken.tokenType == Token.NATCONST) {
             //TODO output assign to nat const
             //probably just get the string from nat const
+<<<<<<< HEAD
         	sb.append(currToken.tokenString);
+=======
+>>>>>>> fd726ba177f759df99642bf58f0d6872985376a7
             getNextToken();
         }
         else{
@@ -465,6 +536,7 @@ public class setTranslator {
             sb.append("!");
             getNextToken();
             parseTest();
+<<<<<<< HEAD
         }
         
         
@@ -527,14 +599,86 @@ public class setTranslator {
             	throw new Error("Identifier not declared");
             }
         
+=======
+        } else {
+            parseTestAtomic();
+        }
+        
+    }
+    
+    public static void parseTestAtomic() {
+//        if (currToken.tokenType == Token.ID){
+//            if (symbols.get(currToken.tokenString) == "SET"){
+//                // TODO
+//
+//            }
+//            else if (symbols.get(currToken.tokenString) == "NAT"){
+//                // TODO
+//
+//            }
+//            else{
+//                throw new Error("Identifier not declared");
+//            }
+//
+//        }
+//
+//
+
+        if (currToken.tokenType == Token.NATCONST) {
+            
+            if (currToken.tokenType != Token.IS_IN) {
+                throw new Error("Expected ISIN token");
+            }
+            
+            parseSetExp();
+        } else if (currToken.tokenType == Token.ID) {
+            if (symbols.get(currToken.tokenString).equals("SET")) {
+                parseSetExp();
+                if (currToken.tokenType == Token.EQUALS) {
+                    //TODO output equals'
+                    getNextToken();
+                    parseSetExp();
+                } else if (currToken.tokenType == Token.SUBSET) {
+                    //TODO output subset
+                    getNextToken();
+                    
+                    parseSetExp();
+                }
+            } else {
+                parseNatExp();
+                
+                if (currToken.tokenType != Token.IS_IN) {
+                    handleError("IS_IN");
+                }
+                getNextToken();
+                parseSetExp();
+            }
+        } else {
+            parseSetExp();
+            if (currToken.tokenType == Token.EQUALS) {
+                //TODO output equals'
+                getNextToken();
+                parseSetExp();
+            } else if (currToken.tokenType == Token.SUBSET) {
+                //TODO output subset
+                getNextToken();
+                parseSetExp();
+            } else {
+                handleError("EQUALS OR SUBSET");
+            }
+>>>>>>> fd726ba177f759df99642bf58f0d6872985376a7
         }
         
     }
     
     public static void parseOut() {
+<<<<<<< HEAD
     	sb.append("System.out.println(");
         parseSetExp();
         sb.append(");");
+=======
+        parseSetExp();
+>>>>>>> fd726ba177f759df99642bf58f0d6872985376a7
         
         if (currToken.tokenType != Token.PERIOD) {
             //TODO problem
@@ -551,6 +695,7 @@ public class setTranslator {
             //TODO expected if
             handleError("IF");
         }
+<<<<<<< HEAD
         sb.append("if(");
         getNextToken();
         
@@ -563,14 +708,33 @@ public class setTranslator {
         getNextToken();
         parseStList();
         sb.append("\n}\n");
+=======
+        
+        getNextToken();
+        
+        parseTest();
+        
+        if (currToken.tokenType != Token.THEN) {
+            throw new Error("Expected Then token");
+        }
+        
+        getNextToken();
+        
+        parseStList();
+>>>>>>> fd726ba177f759df99642bf58f0d6872985376a7
         
         if (currToken.tokenType == Token.ENDIF) {
             getNextToken();
         } else if (currToken.tokenType == Token.ELSE) {
+<<<<<<< HEAD
         	sb.append("else{\n");
             getNextToken();
             parseStList();
             sb.append("\n}\n");
+=======
+            getNextToken();
+            parseStList();
+>>>>>>> fd726ba177f759df99642bf58f0d6872985376a7
             if (currToken.tokenType != Token.ENDIF) {
                 //TODO problem
                 handleError("ENDIF");
